@@ -1,0 +1,1047 @@
+###陈建宇：cjy
+test_query_details_by_id:
+  # 根据交互接口ID集合查询交互接口详情     期望结果  期望返回码
+  #  idList  pageIndex pageSize  except_result   except_code,except_testcase_description
+  - [ [ 381,382,387 ],1,20, True, 0,"数组里有存在的数据" ]        #数组里有存在的数据 --通过
+  - [ [ 10000 ],1,20, True, 0,"数组内容为不存在数据" ]              #数组内容为不存在数据 --通过
+  - [ [ ],1,20, False, 405,"数组内容为空" ]                #数组内容为空 --通过
+  - [ "None", 1,20,False, 405,"数组不传" ]             #数组不传 --通过
+  - [ [ 381,382,387 ],1,999999, True, 0,"pageSize超出最大范围" ]       #pageSize超出最大范围  --通过
+  - [ [ 381,382,387 ],1,0, True, 0,"pageSize超出最小范围" ]            #pageSize超出最小范围  --通过
+  - [ [ 381,382,387 ],999999,20, True, 0,"pageIndex超出最大范围" ]         #pageIndex超出最大范围  --通过
+  - [ [ 381,382,387 ],0,20, True, 0,"pageIndex超出最小范围" ]             #pageIndex超出最小范围  --通过
+  - [ [ 381,382,387 ],"",20, True, 0,"pageIndex为空" ]          #pageIndex为空  --通过
+  - [ [ 381,382,387 ],"None",20, True, 0,"pageIndex不传" ]       #pageIndex不传  --通过
+  - [ [ 381,382,387 ],1,"", True, 0,"pageSize为空" ]            #pageSize为空  --通过
+  - [ [ 381,382,387 ],1,"None", True, 0,"pageSize不传" ]        #pageSize不传  --通过
+  - [ [ 381,382,387 ],"hah",20, False, 400,"pageIndex不为number" ]        #pageIndex不为number  --通过
+  - [ [ 381,382,387 ],1,"hha ", False, 400,"pageSize不为number" ]          #pageSize不为number  --通过
+
+test_get_interactive_interface_list:
+  # 获取交互接口列表  交互类别  接口名称  服务主键ID   期望结果  期望返回码
+  # category, pageIndex pageSize  interfaceName（非必填）,servicePid(非必填),modelCodeList except_result,except_code,except_testcase_description
+  - [ "1",1,20,"FF_", "", [ "T2Z52DA3CN23" ], True, 0,"所有的数据正确" ]       #所有的数据正确 --通过
+  - [ "1",1,20,"", "", [ "T2Z52DA3CN23" ],  True, 0,"interfaceName为空" ]         #interfaceName为空 --通过
+  - [ "1",1,20,"None", "", [ "T2Z52DA3CN23" ],  True,0,"interfaceName不传" ]       #interfaceName不传  -通过
+  - [ "1",1,20,"FF_", "None", [ "T2Z52DA3CN23" ],  True,0,"servicePid不传" ]     #servicePid不传  -通过
+  - [ "2",1,20,"FF_", 228, [ "T2Z52DA3CN23" ],  False,10006,"category为不存在的交互类别" ]   #category为不存在的交互类别  -通过
+  - [ "",1,20,"FF_", 228, [ "T2Z52DA3CN23" ],  False,10006,"category为空" ]    #category为空  --通过
+  - [ "None",1,20,"FF_", 228, [ "T2Z52DA3CN23" ],  False,10006,"category不传" ]  #category不传  --通过
+  - [ "1",1,999999,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageSize超出最大范围" ]   #pageSize超出最大范围   --通过
+  - [ "1",1,0,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageSize超出最小范围" ]           #pageSize超出最小范围  --通过
+  - [ "1",99999999,20,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageIndex超出最大范围" ]         #pageIndex超出最大范围  --通过
+  - [ "1",0,20,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageIndex超出最小范围" ]           #pageIndex超出最小范围  --通过
+  - [ "1","",20,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageIndex为空" ]          #pageIndex为空  --通过
+  - [ "1","None",20,"FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageIndex不传" ]      #pageIndex不传  --通过
+  - [ "1",1,"","FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageSize为空" ]           #pageSize为空  --通过
+  - [ "1",1,"None","FF_", "", [ "T2Z52DA3CN23" ],  True, 0,"pageSize不传" ]       #pageSize不传  --通过
+  - [ "1","你好",20,"FF_", "", [ "T2Z52DA3CN23" ],  False, 400,"pageIndex不为number" ]        #pageIndex不为number  --通过
+  - [ "1",1,"哈哈","FF_", "", [ "T2Z52DA3CN23" ],  False, 400,"pageSize不为number" ]        #pageSize不为number  --通过
+  - [ "1",1,20,"FF_", "", "", True, 0,"modelCodeList车型list为空" ]              #modelCodeList车型list为空  --通过
+  - [ "1",1,20,"FF_", "", "None", True, 0,"modelCodeList车型list不传" ]              #modelCodeList车型list不传  --通过
+
+##### ronghui:荣慧
+
+test_eventGroup_query_list:
+  #事件组列表查询
+  #  登期望结果, 期望返回结果, 期望返回码, 描述
+  #   pageSize, pageIndex, except_result, except_code, except_testcase_description
+  - [ "", 20, true, 0 ,"pageSize为空查询成功" ]
+  - [ "None", 20, true, 0 ,"pageSize不传查询成功" ]
+  - [ 1, "", true, 0 ,"pageIndex为空任查询成功" ]
+  - [ 1, "", true, 0 ,"pageIndex不传任查询成功" ]
+  - [ "9999999999", 20, False, 0, "pageSize超出最大范围" ]
+  - [ "-9999999999", 20, False, 0, "pageSize超出最小范围" ]
+  - [ aa, 20, False, 404 , "pageSize非int类型" ]
+  - [ 1, "9999999999", False, 404 , "pageIndex超出最大范围" ]
+  - [ 1, "-9999999999", False, 404 , "pageIndex超出最小范围" ]
+  - [ 1, aa, False, 404 , "pageIndex非int类型" ]
+
+
+test_eventGroup_detail_id:
+  #事件组详情接口
+  # id 期望返回结果, 期望返回码， 描述
+  # id, except_result, except_code, except_testcase_description
+  - [ 187, true, 0, "正常传参" ]
+  - [ "None", False, 0, "id不传" ]
+  - [ "", False, 0, "id空值" ]
+  - [ "aa", False, 0, "id非格式类型" ]
+  - [ "123", False, 0, "id不存在" ]
+
+test_eventGroup_face_list:
+  #  页码，每页条数，pid，期望返回结果, 期望返回码, 描述
+  #   pageIndex,pageSize,eventGroupPid,except_result, except_code, except_testcase_description
+  - [ 1, 20, 190, true, 0, "传参数查询成功" ]
+  - [ "None", 20, 190, true, 0, "pageIndex不传" ]
+  - [ "", 20, 190, true, 0, "pageIndex为空" ]
+  - [ 1, "None", 190, true, 0, "pageSize不传" ]
+  - [ 1, "", 190, true, 0, "pageSize为空" ]
+  - [ 1, 20, "", true, 0, "eventGroupPid为空" ]
+  - [ 1, 20, "None", true, 0, "eventGroupPid不传" ]
+  - [ 1, 20, 999, true, 0, "eventGroupPid不存在" ]
+  - [ "9999999999", 20, 190, False, 404, "pageIndex超出最大范围" ]
+  - [ "-9999999999", 20, 190, False, 404, "pageIndex超出最小范围" ]
+  - [ "aa", 20, 190, False, 404, "pageIndex非int" ]
+  - [ "9999999999", 20, 190, False, 404, "pageSize超出最大范围" ]
+  - [ "9999999999", 20, 190, False, 404, "pageSize超出最小范围" ]
+  - [ "aa", 20, 190, False, 404, "pageSize非int" ]
+
+
+test_eventGroup_add_update:
+  # id(传id为更新，不传为新增） 业务主键  服务主键id 事件组名称 期望返回结果, 期望返回码,描述
+  # id, eventGroupBid, servicePid , evGroupName, except_result,except_code, except_testcase_description
+  #新增用例
+  - [ "None" , "0x1031", 265, "test_99", true, 0 ,"id不传为新增" ]
+  - [ None , "0x999005", 264, "rh_test_003", False, 0, "编辑eventGroupBid不在区间范围内" ]
+  - [ "None" , "", 265, "test_99", False, 0, "eventGroupBid为空" ]
+  - [ "None" , "None", 265, "test_99", False, 0, "eventGroupBid不传" ]
+  - [ "None" , "0x2015", "", "test_99", False, 0, "eventGroupBid为空" ]
+  - [ "None" , "0x1031", "None", "test_99", False, 0, "servicePid不传" ]
+  - [ "None" , "0x1031", "", "test_99", False, 0, "servicePid为空" ]
+  - [ "None" , "0x1031", "265", "test_99", False, 0, "evGroupName已存在" ]
+  - [ "None" , "0x1031", "265", "", False, 0, "evGroupName为空" ]
+  - [ "None" , "0x1031", "265", "None", False, 0, "evGroupName不传" ]
+  - [ "None" , "0x1031", "265", "111", False, 0, "evGroupName不符合格式" ]
+  #编辑用例
+  - [ 221 , "0x6006", 264, "rh_test_003", true, 0, "传id为编辑" ]
+  - [ 221 , "0x99999", 264, "rh_test_003", False, 0,"编辑eventGroupBid不在区间范围内" ]
+  - [ 221 , "", 264, "rh_test_003", False, 0, "编辑eventGroupBid为空" ]
+  - [ 221 , "None", 264, "rh_test_003", False, 0, "编辑eventGroupBid不传" ]
+  - [ 221 , "0x6006", 999, "rh_test_003", False, 0, "编辑servicePid不传" ]
+  - [ 221 , "0x60065", "", "rh_test_003", False, 0, "编辑servicePid为空" ]
+  - [ 221 , "0x6006", 264, "rh001", False, 0, "编辑evGroupName已存在" ]
+  - [ 221 , "0x6006", 264, "", False, 0, "编辑evGroupName为空" ]
+  - [ 221 , "0x6006", 264, "None", False, 0, "编辑evGroupName不传" ]
+  - [ "None" , "0x6006", "264", "111", False, 0, "evGroupName不符合格式" ]
+
+
+test_eventGroup_id_generate:
+  #  服务pid，元模块类型 期望结果, 期望返回码, 期望返回信息, 描述
+  #   servicePid,metaType,except_result, except_code, except_msg, except_testcase_description
+  - [ 258, 4, true, 0, "", "正常传参生成事件组ID" ]
+  - [ "None", 4, False, 10007, "ID不存在", "servicePid不传" ]
+  - [ "", 4, False, 10007, "ID不存在", "servicePid传空" ]
+  - [ 98746, 4, False, 10007, "ID不存在", "servicePid错误" ]
+  - [ 258, "None", False, 10034, "找不到ID配置", "metaTyp不传" ]
+  - [ 258, "", False, 10034, "找不到ID配置", "metaType传空" ]
+  - [ 258, 18, False, 10034, "找不到ID配置", "metaType错误" ]
+
+test_eventGroup_update_batch:
+  #  服务pid，元模块类型 期望结果, 期望返回码, 期望返回信息, 描述
+  #   ids,isDelete,except_result, except_code, except_msg, except_testcase_description
+  - [ [ 167 ], 1, False, 10013, "", "ids未关联" ]
+  - [ [ 187 ], 1, False, 10013, "不能删除被Event接口关联的事件组", "参数全对" ]
+  - [ "None", 1, False, 10006,"must not be null", "ids不传" ]
+  - [ [ ], 1, False, 10006,"接口参数校验失败", "ids传空" ]
+  - [ [ 98746 ], 1, False, -1,"fail", "ids错误" ]
+  - [ [ 258 ], "None", False, 10006,"must not be null", "isDelete不传" ]
+  - [ [ 258 ], "", False, 10006, "must not be null", "isDelete传空" ]
+  - [ [ 166 ], 99, False, -1, "fail", "isDelete错误" ]
+
+
+### hryu:喻最帅
+
+test_services_getMetaServiceDetail:
+  # 根据id查询服务详情
+  # id
+  - [ 124, 0,true ,"传入正确的id" ]
+  - [ -125, 0,false ,"传入不正确的id" ]
+  - [ "", 0,false ,"id为空" ]
+  - [ "None", 0,false ,"id不传，为None值" ]
+  - [ "abc", 0,false ,"id不为number类型" ]
+
+test_services_getMetaServiceList:
+  # 服务列表查询接口
+  # 页码,页大小，服务名称，服务业务id,平台id，逻辑子系统主键，域主键
+  # pageIndex,pageSize,serviceName,serviceBid,platformPid,subSysPid,domainPid
+  - [ 1,20,"PlatService_SpeedService","0x1032",1,23,1, 0,true ,"传入所有正确的参数" ]
+  - [ 1,20,"","","","","", 0,true ,"传入所有正确的必填参数" ]
+  - [ 1,20,"a","a","1","1","1", 0,true ,"传入不正确的参数" ]
+  - [ 1000,20,"","","","","", 0,true ,"pageIndex值超出最大值范围" ]
+  - [ 1,2000,"","","","","", 0,true ,"pageSize值超出最大值范围" ]
+  - [ 0,20,"","","","","", 0,true ,"pageIndex值超出最小值范围" ]
+  - [ 1,0,"","","","","", 0,true ,"pageSize值超出最小值范围" ]
+  - [ "",20,"PlatService_SpeedService","0x1032",1,23,1, 0,true ,"pageIndex为空" ]
+  - [ "None",20,"PlatService_SpeedService","0x1032",1,23,1, 0,true ,"pageIndex不传" ]
+  - [ 1,"","PlatService_SpeedService","0x1032",1,23,1, 0,true ,"pageSize为空" ]
+  - [ 1,"None","PlatService_SpeedService","0x1032",1,23,1, 0,true ,"pageSize不传" ]
+  - [ 1,20,"PlatService_SpeedService","0x1032","abc",23,1, 0,false ,"platformPid不为number类型" ]
+  - [ 1,20,"PlatService_SpeedService","0x1032",1,"abc",1, 0,false ,"subSysPid不为number类型" ]
+  - [ 1,20,"PlatService_SpeedService","0x1032",1,23,"abc", 0,false ,"domainPid不为number类型" ]
+  - [ 1,"abc","PlatService_SpeedService","0x1032",1,23,1, 0,false ,"pageSize不为number类型" ]
+  - [ "abc",20,"PlatService_SpeedService","0x1032",1,23,1, 0,false ,"pageIndex不为number类型" ]
+
+
+
+test_services_addOrUpdateMetaService:
+  # 服务新增更新接口
+  # id ,业务主键，子系统主键，服务名称，描述
+  # id,serviceBid,subSysPid,serviceName,description,except_code,except_result, except_testcase_description
+  - [ "", "0x1235", 740, "PlatService_serviceName", "description", 0 , true, "id不传，增加服务，其他参数正确" ] #id不传，服务ID或者服务名称重复了，需修改正确的服务id和服务名称
+  - [ 258, "0x8086", 744, "PlatService_serviceName", "description", 0 , true, "传id，修改服务，其他参数正确" ]
+  - [ "abc", "0x8085", 744, "PlatService_serviceName", "description", 0 , false, "id不为number类型" ]
+  - [ "", "0x1234", 740, "PlatService_serviceName", "description", 0 , false, "serviceBid重复提交" ]
+  - [ "", "0x12343455", 740, "PlatService_serviceName", "description", 0 , false, "serviceBid长度不等于6" ]
+  - [ "", "0x1234", 9999, "PlatService_serviceName", "description", 0 , false, "subSysPid不存在" ]
+  - [ "", "0x1234", "abc", "PlatService_serviceName", "description", 0 , false, "subSysPid不为number类型" ]
+  - [ "", "0x1234", 740, "PlatService_serviceName_qwertyuioasdfghjklzxcvbnm,", "description", 0 , false, "serviceName大于31" ]
+
+test_services_batchUpdateField:
+  # 服务批量更新字段接口
+  # ids , 是否删除, 期望返回码,期望结果, 描述
+  # ids, isDeleted, except_code, except_result, except_testcase_description
+  - [ [ "256" ], 1, 0 , true, "单个Ids存在，isDeleted为1" ]  #删除不存在的ID，id需替换已存在的
+  - [ [ "256","257" ], 1, 0 , true, "多个ids存在，isDeleted为1" ]  #删除不存在的ID，id需替换已存在的
+  - [ [ "256" ], 1, 0 , false, "单个Ids不存在,isDeleted为1" ]
+  - [ [ "256","257" ], 1, 0 , false, "多个ids不存在,isDeleted为1" ]
+  - [ [ "258" ], 1, 0 , false, "id被接口关联的服务" ]
+  - [ [ "256" ], 0, 0 , false, "isDeleted为0" ]
+  - [ [ "256" ], "abc", 0 , false, "isDeleted不为number类型" ]
+
+test_services_getInterfaceList:
+  # 接口列表查询
+  # pageIndex,pageSize,serviceInterfaceType,interfaceName,interfaceBid,status,servicePid,fieldProperty,category"
+  # 页码,页大小，服务接口类型，接口名称，接口业务ID，状态，服务id，服务操作方式，类别
+  - [ 1,20, "","","","","","","", 0 , true, "传入所有正确的参数" ]
+  - [ 1,20, "123","123","123","123","123","123","123", 0 , true, "传入不存在的参数" ]
+  - [ 100,20, "","","","","","","", 0 , true, "pageIndex值超出最大值范围" ]
+  - [ 1,2000, "","","","","","","", 0 , true, "pageSize值超出最大值范围" ]
+  - [ 0,20, "","","","","","","", 0 , true, "pageIndex值超出最小值范围" ]
+  - [ 1,0, "","","","","","","", 0 , true, "pageSize值超出最小值范围" ]
+  - [ "",20,"","","","","","","", 0,true ,"pageIndex为空" ]
+  - [ "None",20,"","","","","","","", 0,true ,"pageIndex不传" ]
+  - [ 1,"","","","","","","","", 0,true ,"pageSize为空" ]
+  - [ 1,"None","","","","","","","", 0,true ,"pageSize不传" ]
+  - [ 1,"abc", "","","","","","","", 0 , false, "pageSize不为number类型" ]
+  - [ "abc",20, "","","","","","","", 0 , false, "pageIndex不为number类型" ]
+  - [ 1,20, "abc","","","","","","", 0 , false, "serviceInterfaceType不为integer类型" ]
+  - [ 1,20, "","","","abc","","","", 0 , false, "status不为integer类型" ]
+  - [ 1,20, "","","","","abc","","", 0 , false, "servicePid不为number类型" ]
+  - [ 1,20, "","","","","","abc","", 0 , false, "fieldProperty不为integer类型" ]
+  - [ 1,20, "","","","","","","abc", 0 , false, "category不为integer类型" ]
+
+test_services_updateInterfaceStatus:
+  #接口状态修改
+  #id
+  - [ 523, 0 , true, "传入正确的id" ]
+  - [ 10000, 0 , false, "传入不正确的id" ]
+  - [ "", 0 , false, "id为空" ]
+  - [ "None", 0 , false, "id不传，为None值" ]
+  - [ "abc", 0 , false, "id不为number类型" ]
+
+test_services_getHexId:
+  # 获取十六进制的ID
+  # servicePid, serviceInterfaceType, subSysPid, fieldProperty, sign
+  - [ 228,14,"","",1, 0 , true, "传入正确的参数" ]
+  - [ 228,14,"","",1, 0 , true, "sign=1，subSysPid，fieldProperty为空" ]
+  - [ "","","754","",0, 0 , true, "sign=0，servicePid，serviceInterfaceType，fieldProperty为空" ]
+  - [ 228,14,"","1",0, 0 , false, "sign=0，subSysPid，fieldProperty为空" ]
+  - [ "","","754","1",1, 0 , false, "sign=1，servicePid，serviceInterfaceType为空" ]
+  - [ "abc",14,"","",1, 0 , false, "servicePid不为number类型" ]
+  - [ 228,"abc","","",1, 0 , false, "serviceInterfaceType不为number类型" ]
+  - [ "","","abc","",0, 0 , false, "subSysPid不为number类型" ]
+  - [ 228,14,"","abc",1, 0 , false, "fieldProperty不为number类型" ]
+  - [ 228,14,"","","abc", 0 , false, "sign不为number类型" ]
+
+test_services_batchUpdateInterfaceField:
+  # 批量更新接口字段
+  # ids, isDeleted, except_code, except_result, except_testcase_description
+  - [ [ "557" ], 1, 0 , true, "单个Ids存在，isDeleted为1" ]
+  - [ [ "557","556" ], 1, 0 , true, "多个ids存在，isDeleted为1" ]
+  - [ [ "557","556" ], 1, 0 , false, "单个Ids不存在" ]
+  - [ [ "557","556" ], 1, 0 , false, "多个ids不存在" ]
+  - [ [ "557","556" ], 1, 0 , false, "id被接口关联的服务" ]
+  - [ [ "557","556" ], 1, 0 , false, "isDeleted为0" ]
+  - [ [ "557","556" ], 1, 0 , false, "isDeleted不为number类型" ]
+
+
+test_services_addOrUpdateInterface:
+  # ids  期望返回码,期望结果, 描述
+  #RR/FF
+  #         rr_servicePid, rr_serviceInterfaceType, rr_interfaceName, rr_interfaceBid, rr_interfaceDescription, "
+  #        "rr_status,list, servicePid, serviceInterfaceType, except_code, except_result, "
+  #        "except_testcase_description
+  # serviceInterfaceSubelement,
+  - [ "265", "10","RR_r0001","0x0009","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",0 , true, "服务接口类型为R/R Method,接口批量更新字段接口" ]
+  - [ "265", "10","FF_r0002","0x0010","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",0 , true, "服务接口类型为F/F Method,接口批量更新字段接口" ]
+  - [ "265", "10","RR_r0003","0x0011","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],999999999,"10",10004 , false, "服务接口类型为R/R Method,servicePid为不存在数据" ]
+  - [ "265", "10","RR_r0004","0x0012","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"","10",10006 , false, "服务接口类型为R/R Method,servicePid为空" ]
+  - [ "265", "10","RR_r0005","0x0013","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"None","10",10006 , false, "服务接口类型为R/R Method,servicePid不传" ]
+  - [ "265", "10","FF_r0006","0x0014","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],99999999,"10",10004 , false, "服务接口类型为F/F Method,servicePid为不存在数据" ]
+  - [ "265", "10","FF_r0007","0x0015","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"","10",10006 , false, "服务接口类型为F/F Method,servicePid为空" ]
+  - [ "265", "10","FF_r0008","0x0016","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"None","10",10006 , false, "服务接口类型为F/F Method,servicePid不传" ]
+  - [ "265", "10","RR_r0009","0x0017","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","999",10003 , false, "服务接口类型为R/R Method,serviceInterfaceType为错误类型" ]
+  - [ "265", "10","RR_r0010","0x0018","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","",10006 , false, "服务接口类型为R/R Method,serviceInterfaceType为空" ]
+  - [ "265", "10","RR_r0011","0x0019","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","None",10006 , false, "服务接口类型为R/R Method,serviceInterfaceType不传" ]
+  - [ "265", "10","FF_r0012","0x0020","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265",999,10003 , false, "服务接口类型为F/F Method,serviceInterfaceType为错误类型" ]
+  - [ "265", "10","FF_r0013","0x0021","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","",10006 , false, "服务接口类型为F/F Method,serviceInterfaceType为空" ]
+  - [ "265", "10","FF_r0014","0x0022","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","None",10006 , false, "服务接口类型为F/F Method,serviceInterfaceType不传" ]
+  - [ 66666, "10","RR_r0015","0x0023","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",405 , false, "服务接口类型为R/R Method,rr_servicePid为不存在数据" ]
+  - [ "", "10","RR_r0016","0x0024","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_servicePid为空" ]
+  - [ "None", "10","RR_r0017","0x0025","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_servicePid不传" ]
+  - [ 6666, "10","RR_r0018","0x0026","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",405 , false, "服务接口类型为F/F Method,rr_servicePid为不存在数据" ]
+  - [ "", "10","RR_r0019","0x0027","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_servicePid为空" ]
+  - [ "None", "10","RR_r0020","0x0028","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_servicePid不传" ]
+  - [ "265", 6666,"RR_r0021","0x0029","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",20000 , false, "服务接口类型为R/R Method,rr_serviceInterfaceType为错误类型" ]
+  - [ "265", "","RR_r0022","0x0030","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_serviceInterfaceType为空" ]
+  - [ "265", "None","RR_r0023","0x0031","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_serviceInterfaceType不传" ]
+  - [ "265", 6666,"FF_r0024","0x0032","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",20000 , false, "服务接口类型为F/F Method,rr_serviceInterfaceType为错误类型" ]
+  - [ "265", "","RR_r0025","0x0033","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_serviceInterfaceType为空" ]
+  - [ "265", "None","RR_r0026","0x0034","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_serviceInterfaceType不传" ]
+  - [ "265", "10","r0001","0x0035","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",405 , false, "服务接口类型为R/R Method,rr_interfaceName前缀错误" ]
+  - [ "265", "10","","0x0036","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",405 , false, "服务接口类型为R/R Method,rr_interfaceName为空" ]
+  - [ "265", "10","None","0x0037","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",405 , false, "服务接口类型为R/R Method,rr_interfaceName不传" ]
+  - [ "265", "10","0001","0x0038","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",405 , false, "服务接口类型为F/F Method,rr_interfaceName前缀错误" ]
+  - [ "265", "10","","0x0039","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",405 , false, "服务接口类型为F/F Method,rr_interfaceName为空" ]
+  - [ "265", "10","None","0x0040","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",405 , false,"服务接口类型为F/F Method,rr_interfaceName不传" ]
+  - [ "265", "10","RR_r0027","0x1001","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10030 , false, "服务接口类型为R/R Method,rr_interfaceBid为已存在id" ]
+  - [ "265", "10","RR_r0028","","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_interfaceBid为空" ]
+  - [ "265", "10","RR_r0029","None","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",10006 , false, "服务接口类型为R/R Method,rr_interfaceBid不传" ]
+  - [ "265", "10","FF_r0030","0x1001","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10030 , false, "服务接口类型为F/F Method,rr_interfaceBid为已存在id" ]
+  - [ "265", "10","FF_r0031","","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_interfaceBid为空" ]
+  - [ "265", "10","FF_r0032","None","",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",10006 , false, "服务接口类型为F/F Method,rr_interfaceBid不传" ]
+  - [ "265", "10","RR_r0034","0x0041","None",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "OUT" } ],"265","10",0 , true, "服务接口类型为R/R Method,rr_interfaceDescription不传" ]
+  - [ "265", "10","FF_r0035","0x0042","None",0,[ { "serviceInterfaceSubelement": "r0001","parameterDescription": "测试数据","dataTypeId": 1643355914704,"parameterDirection": "IN" } ],"265","10",0 , true, "服务接口类型为F/F Method,rr_interfaceDescription不传" ]
+
+
+test_services_field_addOrUpdateInterface:
+  #servicePid, serviceInterfaceType, fieldInterfaceList,
+  #                                                 except_code, except_result,
+  #                                                 except_testcase_description
+  - [ "272", "7",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12,"interfaceName": "Get_r008","interfaceBid": "0x5006","dataTypeId": 1643355914778 } ],0 , true, "接口批量更新字段接口" ]
+  - [ "999999", "7",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r009","interfaceBid": "0x5007","dataTypeId": 1643355914778 } ],10004 , false, "servicePid为不存在的id" ]
+  - [ "", "7",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r0010","interfaceBid": "0x5008","dataTypeId": 1643355914778 } ],10006 , false, "servicePid为空" ]
+  - [ "None", "7",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r011","interfaceBid": "0x5009","dataTypeId": 1643355914778 } ],10006 , false, "servicePid不传" ]
+  - [ "272", 99999,[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r011","interfaceBid": "0x5010","dataTypeId": 1643355914778 } ],10003 , false, "serviceInterfaceType为不存在的数据类型" ]
+  - [ "272", "",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r012","interfaceBid": "0x5011","dataTypeId": 1643355914778 } ],10006 , false, "serviceInterfaceType为空" ]
+  - [ "272", "None",[ { "servicePid": 272,"serviceInterfaceType": 7,"fieldProperty": 12, "interfaceName": "Get_r013","interfaceBid": "0x5012","dataTypeId": 1643355914778 } ],10006 , false, "serviceInterfaceType不传" ]
+  - [ "272", "None",[ "None" ],10006 , false, "fieldInterfaceList不传" ]
+  - [ "272", "None",[ ],10006 , false, "fieldInterfaceList为空" ]
+
+test_services_event_addOrUpdateInterface:
+  # event_servicePid, event_serviceInterfaceType,
+  # event_interfaceName,
+  # event_interfaceBid, event_interfaceDescription, event_status,
+  # event_eventGroupPid, event_eventGroupBid, event_sendStrategy,
+  # event_dataTypeId,
+  # servicePid, serviceInterfaceType, except_code,
+  # except_result, except_testcase_description
+  - [ "258", "14","Event_rr001","0x8001","","0","232","0x8087","1","1643355914778","258","14",0 , true, "接口批量更新字段接口" ]
+  - [ 99999, "14","Event_rr002","0x8010","","0","232","0x8087","1","1643355914778","258","14",10003 , false, "event_servicePid为不存在id" ]
+  - [ "", "14","Event_rr003","0x8010","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_servicePid为空" ]
+  - [ "None", "14","Event_rr004","0x8010","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_servicePid不传" ]
+  - [ "258", 9999,"Event_rr005","0x8010","","0","232","0x8087","1","1643355914778","258","14",20000 , false, "event_serviceInterfaceType为不存在的接口类型" ]
+  - [ "258", "None","Event_rr006","0x8010","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_serviceInterfaceType不传" ]
+  - [ "258", "","Event_rr007","0x8010","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_serviceInterfaceType为空" ]
+  - [ "258", "14","rr001","0x8010","","0","232","0x8087","1","1643355914778","258","14",405 , false, "event_interfaceName前缀错误" ]
+  - [ "258", "14","","0x8010","","0","232","0x8087","1","1643355914778","258","14",405 , false, "event_interfaceName为空" ]
+  - [ "258", "14","None","0x8010","","0","232","0x8087","1","1643355914778","258","14",405 , false, "event_interfaceName不传" ]
+  - [ "258", "14","Event_rr008","0x8001","","0","232","0x8087","1","1643355914778","258","14",10030 , false, "event_interfaceBid重复" ]
+  - [ "258", "14","Event_rr009","","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_interfaceBid为空" ]
+  - [ "258", "14","Event_rr010","None","","0","232","0x8087","1","1643355914778","258","14",10006 , false, "event_interfaceBid不传" ]
+  - [ "258", "14","Event_rr011","0x8011","None","0","232","0x8087","1","1643355914778","258","14",0 , true, "event_interfaceDescription不传" ]
+  - [ "258", "14","Event_rr012","0x8012","","","232","0x8087","1","1643355914778","258","14",0 , true, "event_status为空" ]
+  - [ "258", "14","Event_rr013","0x8013","","None","232","0x8087","1","1643355914778","258","14",0 , true, "event_status不传" ]
+  - [ "258", "14","Event_rr014","0x8014","","0","232","None","1","1643355914778","258","14",0 , true, "event_eventGroupBid不传" ]
+  - [ "258", "14","Event_rr015","0x8015","","0","232","","1","1643355914778","258","14",0 , true, "event_eventGroupBid为空" ]
+  - [ "258", "14","Event_rr016","0x8016","","0",9999,"0x8087","1","1643355914778","258","14",10025 , false, "event_eventGroupPid为不存在的事件组" ]
+  - [ "258", "14","Event_rr017","0x8017","","0","","0x8087","1","1643355914778","258","14",10025 , false, "event_eventGroupPid为空" ]
+  - [ "258", "14","Event_rr018","0x8018","","0","None","0x8087","1","1643355914778","258","14",10025 , false, "event_eventGroupPid为空" ]
+  - [ "258", "14","Event_rr019","0x8019","","0","232","0x8087",9999,"1643355914778","258","14",405 , false, "event_sendStrategy发送策略超出范围" ]
+  - [ "258", "14","Event_rr020","0x8020","","0","232","0x8087","","1643355914778","258","14",405 , false, "event_sendStrategy为空" ]
+  - [ "258", "14","Event_rr021","0x8021","","0","232","0x8087","None","1643355914778","258","14",405 , false, "event_sendStrategy不传" ]
+  - [ "258", "14","Event_rr022","0x8022","","0","232","0x8087","1","16433559","258","14",405, false, "event_dataTypeId为不存在的数据" ]
+  - [ "258", "14","Event_rr023","0x8023","","0","232","0x8087","1","","258","14",405, false, "event_dataTypeId为空" ]
+  - [ "258", "14","Event_rr024","0x8024","","0","232","0x8087","1","None","258","14",405, false, "event_dataTypeId为空" ]
+  - [ "258", "14","Event_rr025","0x8025","","0","232","0x8087","1","1643355914778",99999,"14",10004, false, "servicePid为不存在的数据" ]
+  - [ "258", "14","Event_rr026","0x8026","","0","232","0x8087","1","1643355914778","","14",10006, false, "servicePid为空" ]
+  - [ "258", "14","Event_rr027","0x8027","","0","232","0x8087","1","1643355914778","None","14",10006, false, "servicePid不传" ]
+  - [ "258", "14","Event_rr028","0x8028","","0","232","0x8087","1","1643355914778","258",99999,10003 , false, "serviceInterfaceType为错误的数据类型" ]
+  - [ "258", "14","Event_rr028","0x8028","","0","232","0x8087","1","1643355914778","258","",10006 , false, "serviceInterfaceType为空" ]
+  - [ "258", "14","Event_rr028","0x8028","","0","232","0x8087","1","1643355914778","258","None",10006 , false, "serviceInterfaceType不传" ]
+  -
+
+test_services_getInterfaceDetail:
+  # 接口详情1
+  # id,except_code, except_result ,except_testcase_description
+  - [ 523, 0,true ,"传入正确的id" ]
+  - [ 1000, 0,false ,"传入不正确的id" ]
+  - [ "", 0,false ,"id为空" ]
+  - [ "None", 0,false ,"id不传，为None值" ]
+  - [ "abc", 0,false ,"id不为number类型" ]
+
+test_services_updateInterfaceCategory:
+  # 添加或者取消交互接口
+  #interfacePid, category, type
+  - [ "559","1","1", 0 , true, "传入正确的参数" ] #接口已添加为交互接口,请勿重复添加,需需修改类型
+  - [ "10000","1","1", 0 , false, "传入不正确的interfacePids" ]
+  - [ "","1","1", 0 , false, "interfacePid为空" ]
+  - [ "None","1","1", 0 , false, "interfacePid不传" ]
+  - [ "558","1","1", 0 , false, "id不传，为None值" ]
+  - [ "abc","1","1", 0 , false, "id不为number类型" ]
+  - [ "558","1","", 0 , false, "type为空" ]
+  - [ "558","1","abc", 0 , false, "type类型不为Integer" ]
+  - [ "558","1","0", 0 , false, "当交互接口为移除状态时，type改为0" ] #需找一些移除状态的ID
+  - [ "558","1","1", 0 , false, "当交互接口为添加状态时，type改为1" ] #需找一些添加状态的ID
+  - [ "558","","1", 0 , false, "category为空" ]
+  - [ "558","abc","1", 0 , false, "category类型不为Integer" ]
+  - [ "558","123","1", 0 , false, "category的值不为1" ]
+
+
+### 李胜：ls
+
+#   1
+test_dataType_postNewdatatypestructure:
+  #  # 新增数据类型非结构体/姓名 描述 类别 基础数据类型 前缀  discretes  决议 期望返回码,期望结果,描述
+  #  # name, description, category, baseDatatype, namePrefix,discretes, resolution,except_code, except_result, except_testcase_description
+  - [ "test_add_struct_ls", "","Integer","uint8","Int_","","123",0,true,"name为已存在的值" ]
+  - [ "test_add_struct_ls1", "","Integer","uint8","Int_","","123",0,true,"name为不存在的值" ]
+
+  - [ "test_add_struct_ls2", "","Integer","uint8","Int_","","123",0,true,"description为已存在的值" ]
+  - [ "test_add_struct_ls3", "123","Integer","uint8","Int_","","123",0,true,"description为不存在的值" ]
+
+  - [ "test_add_struct_ls4", "","Integer","uint8","Int_","","123",0,true,"category为已存在的值" ]
+
+  - [ "test_add_struct_ls5", "","Integer","uint8","Int_","","123",0,true,"baseDatatype为已存在的值" ]
+
+  - [ "test_add_struct_ls6", "","Integer","uint8","Int_","","123",0,true,"namePrefix为已存在的值" ]
+
+  - [ "test_add_struct_ls7", "123","Integer","uint8","Int_","123","123",0,true,"discretes为已存在的值" ]
+  - [ "test_add_struct_ls8", "12","Integer","uint8","Int_","1234","123",0,true,"discretes为不存在的值" ]
+  - [ "test_add_struct_ls9", "","Integer","uint8","Int_","","123",0,true,"discretes为空" ]
+
+  - [ "test_add_struct_ls10", "","Integer","uint8","Int_","","1234",0,true,"resolution为不存在的值" ]
+  - [ "test_add_struct_ls11", "","Integer","uint8","Int_","","123",0,true,"resolution为已存在的值" ]
+  - [ "test_add_struct_ls12", "","Integer","uint8","Int_","","",0,true,"resolution为空" ]
+  - [ "test_add_struct_ls13", "","Integer","uint8","Int_","","None",0,true,"resolution不传" ]
+
+  #       异常      用例
+
+  - [ "", "","Integer","uint8","Int_","","123",10006,False,"name为空" ]
+  - [ "None", "","Integer","uint8","Int_","","123",10006,False,"name不传" ]
+
+  - [ "test_add_struct_ls24", "None","Integer","uint8","Int_","","123",500,False,"description不传" ]  # 服务器内部错误
+
+  - [ "test_add_struct_ls14", "","","uint8","Int_","","123",10006,False,"category为空" ]
+  - [ "test_add_struct_ls15", "","None","uint8","Int_","","123",10006,False,"category不传" ]
+  - [ "test_add_struct_ls16", "","Intege","uint8","Int_","","123",10006,False,"category为不存在的值" ]
+
+  - [ "test_add_struct_ls17", "","Integer","","Int_","","123",10006,False,"baseDatatype为空" ]
+  - [ "test_add_struct_ls18", "","Integer","None","Int_","","123",10006,False,"baseDatatype不传" ]
+  - [ "test_add_struct_ls19", "","Integer","uint","Int_","","123",10006,False,"baseDatatype为不存在的值" ]
+
+  - [ "test_add_struct_ls20", "","Integer","uint8","","","123",10006,False,"namePrefix为空" ]
+  - [ "test_add_struct_ls21", "","Integer","uint8","None","","123",10006,False,"namePrefix不传" ]
+  - [ "test_add_struct_ls22", "","Integer","uint8","Int","","123",10006,False,"namePrefix为不存在的值" ]
+
+  - [ "test_add_struct_ls23", "","Integer","uint8","Int_","None","123",402,False,"discretes不传" ]  #不通过
+
+
+
+#   2
+test_dataType_postmodifydatatypestructure:
+  # 修改数据类型非结构体/id 前缀 姓名  类别 基础数据类型  单元  期望返回码,期望结果,描述
+  # id,namePrefix,name,category,baseDatatype,unit,except_code,except_result,except_testcase_description
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"id为已存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"namePrefix为已存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"name为已存在的值" ]
+  - [ "1643355914770","Int_","ABC981","Integer","uint8",1213,0, true,"name为不存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"category为已存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"baseDatatype为已存在的值" ]
+
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"unit为已存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8",1213,0, true,"unit为不存在的值" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8","",0, true,"unit为空" ]
+  - [ "1643355914770","Int_","ABC98","Integer","uint8","None",0, true,"unit不传" ]
+
+
+  #  异常      用例
+  - [ "","Int_","ABC98","Integer","uint8",1213,10025, false,"id为空" ]
+  - [ "None","Int_","ABC98","Integer","uint8",1213,10025, false,"id不传" ]
+  - [ "164335591470","Int_","ABC98","Integer","uint8",1213,10003, false,"id为不存在的值" ]
+
+  - [ "1643355914703","","ABC98","Integer","uint8",1213,10006, false,"namePrefix为空" ]
+  - [ "1643355914703","None","ABC98","Integer","uint8",1213,10006, false,"namePrefix不传" ]
+  - [ "1643355914703","In","ABC98","Integer","uint8",1213,10006, false,"namePrefix为不存在的值" ]
+
+
+  - [ "1643355914703","Int_","","Integer","uint8",1213,10006, false,"name为空" ]
+  - [ "1643355914703","Int_","None","Integer","uint8",1213,10006, false,"name不传" ]
+
+  - [ "1643355914703","Int_","ABC98","","uint8",1213,10006, false,"category为空" ]
+  - [ "1643355914703","Int_","ABC98","None","uint8",1213,10006, false,"category不传" ]
+  - [ "1643355914703","Int_","ABC98","Intege","uint8",1213,402, false,"category为不存在的值" ]     # 空指针异常 BUG
+
+  - [ "1643355914703","Int_","ABC98","Integer","",1213,10006, false,"baseDatatype为空" ]
+  - [ "1643355914703","Int_","ABC98","Integer","None",1213,10006, false,"baseDatatype不传" ]
+  - [ "1643355914703","Int_","ABC98","Integer","uint",1213,0, false,"baseDatatype为不存在的值" ]
+
+
+test_dataType_get_unstructured: #  3
+  #获取详情非结构体： 主键id  期望结果  期望返回码  期望返回结果
+  #   id    except_result   except_code     except_msg   -通过
+  - [ 1643355914705, True, 0, "id正确" ]                          #id正确 --通过
+  - [ 164335591470, False, 0, "数据不存在" ]                  #id不存在 --通过   bug用例，错误的id请求返回码与成功返回码一致
+  - [ "", False, 10025, "缺少必填字段,主键id不正确" ]           # id为空  --通过
+  - [ "None", False, 10025, "缺少必填字段,主键id不正确" ]      #id不传   --通过
+
+
+
+
+test_04_delete_data_type:
+  #删除数据类型     4
+  #主键id   期望结果    期望返回码   期望msg
+  # id    except_result   except_code     except_msg
+  - [ 1643355917497, True, 0,"id正确" ]            #id正确  --  通过
+  #  - [ 1643355917498, True, 0,"id正确" ]            #id正确  --  通过(可删)
+  - [ 1643355914729, False, 10009,"未识别操作,该记录不存在或已经删除" ]       #通过     #已删除 对的
+  - [ "", False, 10025,"缺少必填字段,主键id不正确" ]                  #通过
+  - [ "None", False, 10025,"缺少必填字段,主键id不正确" ]              #通过
+
+# 5
+test_dataType_test_05_data_type_list_query:
+  # 数据类型列表查询/
+  #pageSize, pageIndex,name,except_code, except_result, except_testcase_description
+  - [ 999,10,123,0,true,"pageIndex值超出最大值范围" ]
+  - [ 10,999,123,0,true,"pageSize值超出最大值范围" ]
+
+  - [ 0,0,123,0,true,"pageIndex值超出最小值范围" ]
+  - [ 0,0,123,0,true,"pageSize值超出最小值范围" ]
+
+
+  - [ 100,"",123,0,true,"name为已存在" ]
+  - [ 100,"None",123,0,true,"name为不存在" ]
+  - [ "",100,123,0,true,"name为空" ]
+  - [ "None",123,100,0,true,"name不传" ]
+
+  - [ abc,100,123,400,False,"pageSize不为number类型" ]
+  - [ 100,abc,123,400,False,"pageIndex不为number类型" ]
+
+
+# 6
+test_dataType_test_06_new_data_type_structure:
+  # 新增数据类型结构体 数据类型名称前缀，数据类型名称，数据类型分类，基础数据类型，描述，引用的数据类型ID，名称，期望结果，期望返回码
+  # namePrefix,name,category description  refDataTypeId  baseDatatype  name1 unit except_result   except_code except_testcase_description
+  - [ "Struct_", "test_add_struct_01","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"namePrefix为已存在的值" ]
+  - [ "Struct_", "test_add_struct_02","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"name为已存在的值" ]
+  - [ "Struct_", "test_add_struct_03","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"name为不存在的值" ]
+  - [ "Struct_", "test_add_struct_04","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"category为已存在的值" ]
+  - [ "Struct_", "test_add_struct_05","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"description为已存在的值" ]
+  - [ "Struct_", "test_add_struct_06","Struct", "12","1643355914750","uint8","lsabd11","123",true,0,"description为不存在的值" ]
+  - [ "Struct_", "test_add_struct_07","Struct", "","1643355914750","uint8","lsabd11","123",true,0,"description为空" ]
+  - [ "Struct_", "test_add_struct_08","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"refDataTypeId为已存在的值" ]
+  - [ "Struct_", "test_add_struct_09","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"baseDatatype为已存在的值" ]
+
+  - [ "Struct_", "test_add_struct_10","Struct", "123","1643355914750","uint8","lsabd11","123",true,0,"unit为已存在的值" ]
+  - [ "Struct_", "test_add_struct_11","Struct", "123","1643355914750","uint8","lsabd11","12",true,0,"unit为不存在的值" ]
+  - [ "Struct_", "test_add_struct_12","Struct", "123","1643355914750","uint8","lsabd11","",true,0,"unit为空" ]
+  - [ "Struct_", "test_add_struct_13","Struct", "123","1643355914750","uint8","lsabd11","None",true,0,"unit不传" ]
+
+
+
+
+  - [ "", "test_add_struct_14","Struct", "123","1643355914750","uint8","lsabd11","123",false,10006,"namePrefix为空" ]
+  - [ "None", "test_add_struct_15","Struct", "123","1643355914750","uint8","lsabd11","123",false,10006,"namePrefix不传" ]
+  - [ "Struct", "test_add_struct_16","Struct", "123","1643355914750","uint8","lsabd11","123",false,10006,"namePrefix不存在" ]
+
+  - [ "Struct_", "","Struct", "123","1643355914750","uint8","lsabd11","123",false,10006,"name为空" ]
+  - [ "Struct_", "None","Struct", "123","1643355914750","uint8","lsabd11","123",false,10006,"name不传" ]
+
+  - [ "Struct_", "test_add_struct_17","Struc", "123","1643355914750","uint8","lsabd11","123",false,10006,"category为不存在的值" ]
+  - [ "Struct_", "test_add_struct_18","", "123","1643355914750","uint8","lsabd11","123",false,10006,"category为空" ]
+  - [ "Struct_", "test_add_struct_19","None", "123","1643355914750","uint8","lsabd11","123",false,10006,"category不传" ]
+
+  - [ "Struct_", "test_add_struct_20","Struct", "None","1643355914750","uint8","lsabd11","123",false,10001,"description不传" ]
+  - [ "Struct_", "test_add_struct_21","Struct", "123","16433559147","uint8","lsabd11","123",false,10006,"refDataTypeId为不存在的值" ]
+
+  - [ "Struct_", "test_add_struct_22","Struct", "123","","uint8","lsabd11","123",true,0,"refDataTypeId为空" ]  #正常
+  - [ "Struct_", "test_add_struct_23","Struct", "123","None","uint8","lsabd11","123",true,0,"refDataTypeId不传" ]  #正常
+  - [ "Struct_", "test_add_struct_24","Struct", "123","1643355914750","uint","lsabd11","123",false,10006,"baseDatatype为不存在的值" ]
+  - [ "Struct_", "test_add_struct_25","Struct", "123","1643355914750","","lsabd11","123",false,10006,"baseDatatype为空" ]
+  - [ "Struct_", "test_add_struct_26","Struct", "123","1643355914750","None","lsabd11","123",false,10006,"baseDatatype不传" ]
+
+test_dataType_modify_structure:
+  #修改数据类型结构体（Struct_）： 7
+  # 主键id，数据类型名称前缀，数据类型名称，数据类型分类，基础数据类型，描述，引用的数据类型ID，名称，期望结果，期望返回码
+  # id  namePrefix   name   category    baseDatatype    description refDataTypeId(非必填 文档里写了必填)  name1  unit except_result   except_code  except_testcase_description
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"id已存在" ]                # 通过0
+  - [ 164335591477, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",False,404,"id不存在" ]              # 返回404
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"namePrefix为已存在" ]      # 通过
+  - [ 1643355914778, "Struc_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",False,10006,"namePrefix为不存在" ]  # 返回10006
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"name 已存在" ]             # 通过0
+  - [ 1643355914778, "Struct_", "abcd1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"name 不存在" ]              #  通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"category 已存在" ]         # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struc","uint8","",1643355914776,"abc1234","123",False,10006,"category不存在" ]      # 返回10006
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"baseDatatype已存在" ]      # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","u","",1643355914776,"abc1234","123",False,10006,"baseDatatype不存在" ]     # 返回10006
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"description已存在" ]       # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"description不存在" ]       # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","123",True,0,"reDataTypeId已存在" ]      # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",164335591477,"abc1234","123",True,0,"reDataTypeId不存在" ]       # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",'123',True,0,"name1已存在" ]             # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc123",'123',True,0,"name1不存在" ]              # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",'123',True,0,"unit已存在" ]              # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",'12',True,0,"unit不存在" ]               # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","",True,0,"unit为空" ]                 # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","",True,0,"unit不传" ]                 # 通过0
+
+
+  - [ "", "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"id为空" ]
+  - [ "None", "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"id为空" ]
+  - [ 1643355914778, "", "abcde1234","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"namePrefix为空" ]
+  - [ 1643355914778, "None", "abcde1234","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"namePrefix不传" ]
+  - [ 1643355914778, "Struct_", "","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"name 为空" ]
+  - [ 1643355914778, "Struct_", "None","Struct","uint8","",1643355914776,"abc1234",123,False,10006,"name 不传" ]
+  - [ 1643355914778, "Struct_", "abcde1234","","uint8","",1643355914776,"abc1234",123,False,10006,"category 为空" ]
+  - [ 1643355914778, "Struct_", "abcde1234","None","uint8","",1643355914776,"abc1234",123,False,10006,"category 不传" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","","",1643355914776,"abc1234",123,False,10006,"baseDatatype为空" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","None","",1643355914776,"abc1234",123,False,10006,"baseDatatype不传" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234",123,True,0,"description为空" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","None",1643355914776,"abc1234",123,True,0,"description不传" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","","","abc1234",123,True,0,"reDataTypeId为空" ]
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","","None","abc1234",123,true,0,"reDataTypeId不传" ]   # reDataTypeId不传 --通过0  Postman上跑出结果为ture  code为0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"",123,False,10006,"name1为空" ]   # 10006
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"None",123,False,10006,"name1不传" ]   # 10006   Postman上跑出结果为False  code为10006
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","",True,0,"unit为空" ]   # 通过0
+  - [ 1643355914778, "Struct_", "abcde1234","Struct","uint8","",1643355914776,"abc1234","None",True,0,"unit不传" ]   # 通过0
+
+
+
+test_dataType_test_08_get_detail_structure: #8
+  # 获取详情结构体/id，except_code,except_result,except_msg
+  # id
+  - [ 1643355917499, 0, True, "id正确" ]                          #id正确 --通过
+  - [ 164335591463, 10032, False, "数据不存在" ]                  #id不存在 --通过   bug用例，错误的id请求返回码与成功返回码一致
+  - [ "", 10032, False, "缺少必填字段,主键id不正确" ]           # id为空  --通过
+  - [ "None", 10032, False, "缺少必填字段,主键id不正确" ]      #id不传   --通过
+
+#周思怡 zsy
+test_platform_getPlatformList:
+  # 分页查询平台/页码 每页条数 平台名称  期望返回码,期望结果, 描述
+  # page_index,page_size,platformName,except_code, except_result ,except_msg ,except_testcase_description
+  - [ "1", "20", "EEA", 0,true ,"","所有参数输入正确" ] #所有参数输入正确
+  - [ "None","20","",0,true ,"","pageIndex不输入" ]#pageindex不输入
+  - [ "","20","",0,true ,"","pageIndex为空" ]#pageindex为空
+  - [ "1000","20","",0,true,"","pageIndex超出最大范围" ]  #pageIndex超出最大范围
+  - [ "0","20","",0,true,"","pageIndex超出最大范围" ]  #pageIndex超出最小范围
+  - [ "1","None","",0,true ,"","pageSize不输入" ] #pageSize不输入
+  - [ "1","","",0,true ,"","pageSize为空" ] #pageSize为空
+  - [ "1","1000","",0,true,"","pageSize超出最大范围" ]  #pageSize超出最大范围
+  - [ "1","0","",0,true,"","pageSize超出最小范围" ]  #pageSize超出最小范围
+  - [ "aa", "20", "EEA", 400, false,"请求数据格式不符!","pageIndex非int类型的值" ] #pageIndex非int类型的值
+  - [ "1", "aa", "EEA", 400, false, "请求数据格式不符!","pageSize非int类型的值!" ] #pageSzie非int类型的值
+
+test_platform_updatePlatform:
+  # 更新架构平台/id  平台中文名称 平台英文名称  平台描述  期望返回码,期望结果,期望返回信息，描述
+  # id,platformCnName,platformName,description,except_code, except_result ,except_msg, except_testcase_description
+  - [ "1","None","EEA 3.0","", 400, false,"请求数据格式不符!", "platformCnName不输入" ]#platformCnName不输入
+  - [ "1","","EEA 3.0","",400, false,"请求数据格式不符!", "platformCnName为空" ]#platformCnName为空
+  - [ "1","111","None","",400, false, "请求数据格式不符!", "platformName不输入" ]#platformName不输入
+  - [ "1", "111","", "",400,false, "请求数据格式不符!", "platformName为空" ] #platformName为空
+  - [ "aa","111", "EEA 3.0","",400,false, "请求数据格式不符!", "id不为int类型" ] #id不为int类型
+  - [ "","111", "EEA 3.0","",400,false, "id不存在", "id为空" ] # id为空 不通过
+  - [ "None","111", "EEA 3.0","",400,false, "id不存在", "id不输入" ] # id不输入 不通过
+  - [ "9986","111", "EEA 3.0","",400,false, "id不存在", "id不存在" ] # id不存在 不通过
+  - [ "1","111", "EEA 3.0","测试0", 0,true,"", "所有参数输入正确" ] #所有参数输入正确
+  - [ "1", "111", "EEA 3.0", "", 0,true,"请求数据格式不符!", "description为空" ] #description为空
+
+
+test_platform_updateDomain:
+  #编辑逻辑域/id domainName domainCnName description platformPid except_code except_result ,except_msg,except_testcase_description
+  - [ 1,"", "中央控制域","中央控制",1, 400,false ,"请求数据格式不符!","domainName为空" ]#domainName为空
+  - [ 1,"None", "中央控制域","中央控制",1, 400,false ,"请求数据格式不符!","domainName不输入" ]#domainName不输入
+  - [ 1,"Central Control", "热管理域", "中央控制",1,400,false ,"domainName已存在","domainName传入已存在值" ] #domainName传入已存在值 不通过
+  - [ 1,"Central Control", "","中央控制",1, 400,false ,"请求数据格式不符!","domainCnName为空" ]#domainCnName为空
+  - [ 1,"Central Control", "None","中央控制",1,400,false ,"请求数据格式不符!","domainCnName不输入" ]#domainCnName不输入
+  - [ 1,"Thermal Management", "中央控制域", "中央控制",1,400,false ,"domainCnName已存在","domainCnName传入已存在值" ] #domainCnName传入已存在值 不通过
+  - [ 1,"Central Control", "中央控制域","中央控制","None", 400,false ,"请求数据格式不符!","platformPid不输入" ] #platformPid不输入
+  - [ 1 ,"Central Control", "中央控制域","中央控制","",400, false ,"请求数据格式不符!","platformPid为空" ] #platformPid为空
+  - [ 1,"Central Control", "中央控制域", "中央控制",4444,400,false ,"id不存在","platformPid不存在" ] #platformPid不存在 不通过
+  - [ "aa","Central Control", "中央控制域","中央控制",1,400, false ,"请求数据格式不符!","id为空" ]  #id不为int类型
+  - [ "","Central Control", "中央控制域","中央控制",1,400, false ,"id不存在","id为空" ]  #id为空 不通过
+  - [ "None","Central Control", "中央控制域","中央控制",1, 400, false ,"id不存在","id不输入" ]  #id不输入 不通过
+  - [ 77888,"Central Control", "中央控制域","中央控制",1, 400, false ,"id不存在","id不存在" ]  #id不存在 不通过
+  - [ 1,"Central Control", "中央控制域", "中央控制",1, 0, True, "", "所有参数输入正确" ] #所有参数输入正确
+  - [ 1,"Central Control", "中央控制", "",1,0,true ,"","description为空" ]#description为空
+
+
+
+test_platform_getDomainList:
+  #获取逻辑域列表/page_index, page_size ,platformPid,domainName,except_code, except_result ,except_msg,except_testcase_description
+  - [ "1","20","","",0,true,"","所有参数输入正确" ]  #所有参数输入正确
+  - [ "1","20","","中央",0,true,"","传入逻辑与名称" ]  #传入逻辑域名称
+  - [ "1","20",1,"",0,true,"","传入平台ID" ]  #传入平台ID
+  - [ "1000","20","","",0,true,"","pageIndex超出最大范围" ]  #pageIndex超出最大范围
+  - [ "0","20","","",0,true,"","pageIndex超出最大范围" ]  #pageIndex超出最小范围
+  - [ "1","1000","","",0,true,"","pageSize超出最大范围" ]  #pageSize超出最大范围
+  - [ "1","0","","",0,true,"","pageSize超出最大范围" ]  #pageSize超出最小范围
+  - [ "", "20", "", "", 0, true,"","pageIndex传空" ] #pageIndex传空
+  - [ "None", "20", "", "", 0, true,"","pageIndex不传" ] #pageIndex不传
+  - [ "1", "", "", "", 0, true, "","pageSize传空" ] #pageSzie传空
+  - [ "1", "None", "", "", 0, true, "", "pageSize不传" ] #pageSzie不传
+  - [ "aa", "20", "", "", 400, false,"请求数据格式不符!","pageIndex非int类型的值" ] #pageIndex非int类型的值
+  - [ "1", "aa", "", "", 400, false, "请求数据格式不符!","pageSzie非int类型的值" ] #pageSzie非int类型的值
+  - [ "1","20","aa","",400,false,"请求数据格式不符!","platformPid非int类型的值" ] #platformPid非int类型的值
+
+
+
+test_platform_getLogicSystemList:
+  #子系统列表查询接口/page_index, page_size, domainPid, platformPid, subSysName, except_code, except_result, except_msg, except_testcase_description
+  - [ "1", "20", 1, "", "456", 0, true, "", "所有参数输入正确" ]  #所有参数输入正确
+  - [ "1", "20", 1, "", "", 0, true, "", "传入domainPid" ]  #传入domainPid
+  - [ "1", "20", "", 99, "", 0, true, "", "传入platformPid" ]  #传入platformPid 不通过
+  - [ "1", "20", "", "", "456", 0, true, "", "传入subSysName" ]  #传入subSysName
+  - [ "", "20", "", "", "",0, true,"","pageIndex为空" ] #pageindex为空
+  - [ "None", "20", "", "", "",0,true,"","pageIndex不输入" ] #pageindex不输入
+  - [ "1000", "20", "", "", "",0,true,"","pageIndex超出最大范围" ]  #pageIndex超出最大范围
+  - [ "0", "20", "", "", "",0,true,"","pageIndex超出最小范围" ]  #pageIndex超出最小范围
+  - [ "1", "", "", "", "",0,true,"","pageSize为空" ] #pagesize为空
+  - [ "1", "None","", "", "",0,true,"","pageSize不输入" ] #pagesize不输入
+  - [ "1", "1000", "", "", "",0,true,"","pageSize超出最大范围" ]  #pagesize超出最大范围
+  - [ "1","0", "", "", "",0,true,"","pageSize超出最小范围" ]  #pagesize超出最小范围
+  - [ "1", "aa", "", "", "", 400, false,"请求数据格式不符!","pageSize非int类型的值" ] #pageSize非int类型的值
+  - [ "1", "aa", "", "", "", 400, false,"请求数据格式不符!","pageSize非int类型的值" ] #pageSize非int类型的值
+  - [ "1", "20", "aa", "", "", 400, false,"请求数据格式不符!","domain_pid非int类型的值!" ] #domain_pid非int类型的值
+  - [ "1", "20", "", "aa", "", 400, false,"请求数据格式不符!","platformPid非int类型的值!" ] #platformPid非int类型的值
+
+test_platform_addOrUpdateLogicSystem:
+  #子系统新增更新接口/id,domain_pid,subSysType, subSysCnName, subSysName, description,except_code, except_result ,except_msg ,except_testcase_description
+  - [ "None", 1,1,"测试逻辑子系统36","test_logic_system36","测试添加", 0,true,"","新增-所有参数输入正确" ]  #所有参数输入正确
+  - [ "None", 1,1,"测试逻辑子系统37","test_logic_system37","", 0, true,"","新增-所有参数输入正确" ]  #description为空
+  - [ "None", "", 1,"测试逻辑子系统6","test_logic_system6", "", 400,false,"请求数据格式不符!","新增-domain_pid为空" ]  #domain_pid为空
+  - [ "None", "None", 1,"测试逻辑子系统7","test_logic_system7", "", 400,false,"请求数据格式不符!","新增-domain_pid不输入" ]  #domain_pid不输入
+  - [ "None", "aa", 1,"测试逻辑子系统8","test_logic_system8", "", 400,false,"请求数据格式不符!","新增-domain_pid不输入" ]  #domain_pid非int类型
+  - [ "None", 999, 1,"测试逻辑子系统9","test_logic_system9","", 10004, false,"上一级数据不存在","新增-domain_pid不存在" ]  #domain_pid不存在
+  - [ "None", 1, "", "测试逻辑子系统10","test_logic_system10","", 400, false,"请求数据格式不符!","新增-subSysType为空" ]  #subSysType为空
+  - [ "None", 1, "None","测试逻辑子系统11","test_logic_system11","",400,false,"请求数据格式不符!","新增-subSysType不输入" ]  #subSysType不输入
+  - [ "None", 1, "aa","测试逻辑子系统12","test_logic_system12","",400,false,"请求数据格式不符!","新增-subSysType非int类型" ]  #subSysType非int类型
+  - [ "None", 1, 99,"测试逻辑子系统38","test_logic_system38","",400,false,"请求数据格式不符!","新增-subSysType不为1和2" ]  #subSysType不为1和2 不通过
+  - [ "None", 1,1,"","test_logic_system14","",400,false,"请求数据格式不符!","新增-subSysCnName为空" ]  #subSysCnName为空
+  - [ "None", 1,1,"None","test_logic_system15","",400,false,"请求数据格式不符!","新增-subSysCnName不输入" ]  #subSysCnName不传
+  - [ "None", 1,1,"测试逻辑子系统14","","",400,false,"请求数据格式不符!","新增-subSysName为空" ]  #subSysName为空
+  - [ "None", 1,1,"测试逻辑子系统15","None","",400,false,"请求数据格式不符!","新增-subSysName不输入" ]  #subSysName不输入
+  - [ "None", 1,1,"测试逻辑子系统16","452","",10002,false,"重复数据插入","新增-subSysName不输入" ]  #subSysName已存在
+  - [ 198465, 1, 1,"测试逻辑子系统","test_logic_system", "", 10007,false,"ID不存在","编辑-id不存在" ]  #id不存在
+  - [ "aa", 1, 1,"测试逻辑子系统","test_logic_system", "", 400,false,"请求数据格式不符!","编辑-id为非int类型" ]  #id为非int类型
+  - [ 756, "", 1,"测试逻辑子系统","test_logic_system", "", 400,false,"请求数据格式不符!","编辑-domain_pid为空" ]  #domain_pid为空
+  - [ 756, "None", 1,"测试逻辑子系统","test_logic_system", "", 400,false,"请求数据格式不符!","编辑-domain_pid不输入" ]  #domain_pid不输入
+  - [ 756, "aa", 1,"测试逻辑子系统","test_logic_system", "", 400,false,"请求数据格式不符!","编辑-domain_pid不输入" ]  #domain_pid非int类型
+  - [ 756, 999, 1,"测试逻辑子系统","test_logic_system","", 10004, false,"上一级数据不存在","编辑-domain_pid不存在" ]  #domain_pid不存在
+  - [ 756, 1, "", "测试逻辑子系统","test_logic_system","", 400, false,"请求数据格式不符!","编辑-subSysType为空" ]  #subSysType为空
+  - [ 756, 1, "None","测试逻辑子系统","test_logic_system","",400,false,"请求数据格式不符!","编辑-subSysType不输入" ]  #subSysType不输入
+  - [ 756, 1, "aa","测试逻辑子系统","test_logic_system","",400,false,"请求数据格式不符!","编辑-subSysType非int类型" ]  #subSysType非int类型
+  - [ 756, 1, 99,"测试逻辑子系统","test_logic_system","",400,false,"请求数据格式不符!","编辑-subSysType不为1和2" ]  #subSysType不为1和2 不通过
+  - [ 756, 1,1,"","test_logic_system","",400,false,"请求数据格式不符!","编辑-subSysCnName为空" ]  #subSysCnName为空
+  - [ 756, 1,1,"None","test_logic_system","",400,false,"请求数据格式不符!","编辑-subSysCnName不输入" ]  #subSysCnName不传
+  - [ 756, 1,1,"测试逻辑子系统","","",400,false,"请求数据格式不符!","编辑-subSysName为空" ]  #subSysName为空
+  - [ 756, 1,1,"测试逻辑子系统","None","",400,false,"请求数据格式不符!","编辑-subSysName不输入" ]  #subSysName不输入
+  - [ 756, 1,1,"测试逻辑子系统","452","",10002,false,"重复数据插入","编辑-subSysName不输入" ]  #subSysName已存在
+  - [ 756, 1,1,"测试逻辑子系统","test_logic_system","", 0, true,"","编辑-所有参数输入正确" ]  #description为空
+  - [ 756, 1,1,"测试逻辑子系统","test_logic_system","测试数据-请勿操作", 0,true,"","编辑-所有参数输入正确" ]  #所有参数输入正确
+
+
+
+
+test_platform_getLogicSystemDetail:
+  #子系统详情接口/id,except_code, except_result ,except_result，except_testcase_description
+  - [ 756,0,true,"","输入存在ID" ]  #输入存在ID
+  - [ 9964,0,false,"id不存在","输入不存在ID" ]  #输入不存在ID 不通过
+  - [ "",404,false,"请求失败","id为空" ]  #id为空
+  - [ "aa",10005,false,"接口参数类型错误","id不为int类型" ]  #id不为int类型
+
+
+test_platform_batchUpdateField:
+  #子系统删除服务/id,isDelete,except_code, except_result,except_msg,except_testcase_description
+  - [ [ 859 ], 1, 0, true, "", "输入所有参数" ]  #输入所有参数
+  - [ [ ], 1, 400, false,"请求数据格式不符!","ids为空" ]  #ids传空
+  - [ "None",1,10006,false,"id不能为空,至少选一条记录","ids不传" ]  #ids不传
+  - [ [ 761 ],"None",10015,false,"不符合更新条件，请检查参数","不输入isDelete" ]  #不输入isDelete
+  - [ [ 760 ],"",10015,false,"不符合更新条件，请检查参数","isDelete为空" ]  #isDelete为空
+  - [ [ 759 ],2,10006,false,"接口参数校验失败","isDelete不为1" ]  #isDelete不为1
+  - [ [ 759 ],"aa",400,false,"请求数据格式不符!","isDelete不为int类" ]  #isDelete不为int类
+  - [ [ "aa" ],1,400,false,"请求数据格式不符!","isDelete不为int类" ]  #id不为int类型
+  - [ [ 9874 ],1,10012,false,"删除不存在的ID","id不存在" ]  #id不存在
+
+    ### 陈诚：cc
+  # test_platform_getPlatformList:
+  # 分页查询平台/页码 每页条数 平台名称  期望返回码,期望结果, 描述
+  # page_index,page_size,platformName,except_code, except_result ,except_testcase_description
+  #  - [ 1, 10, " ", 0,true ,"w分页查询平台"]
+
+  test_01_element_model_get_Meta_ElementTree:
+    #  series_code, model_code, platform_id, search_meta_type, search_name,
+    #
+    - [ "A60", "JU2A-0B7-07", 1, 1, "1", true, 0,"正确数据查询" ]
+    #  series_code
+    - [ None, "JU2A-0B7-07", 1, 1, "1", false, 400,"seriesCode不传" ]
+    - [ "", "JU2A-0B7-07", 1, 1, "1", false, 400,"seriesCode为空" ]
+    - [ "5465465465", "JU2A-0B7-07", 1, 1, "1", true, 0, "seriesCode为不存在数据" ]
+    - [ "546546545465465465546546546554654654655465465465546546546565", "JU2A-0B7-07", 1, 1, "1", true, 0, "series_code字符长度超过64位" ]
+    #  model_code
+    - [ "A60", None, 1, 1, "1", false, 400, "modelCode不传" ]
+    - [ "A60", "", 1, 1, "1", false, 400, "modelCode为空" ]
+    - [ "A60", "dfddfdf", 1, 1, "1", true, 0, "modelCode为不存在数据" ]
+    - [ "A60", "dfddfdfddfdfdfddfdfdfddfdfdfddfdfdfddfdfdfddfdfdf", 1, 1, "1", true, 0, "modelCode字符长度超过64位" ]
+    # platform_id
+    - [ "A60", "JU2A-0B7-07", None, 1, "1", false, 400, "platformId不传" ]
+    - [ "A60", "JU2A-0B7-07", "", 1, "1", false, 400, "platformId为空" ]
+    - [ "A60", "JU2A-0B7-07", 111, 1, "1", true, 0, "platformId为不存在数据" ]
+    # search_meta_type
+    - [ "A60", "JU2A-0B7-07", 1, None, "1", true, 0, "searchMetaType为不传" ]
+    - [ "A60", "JU2A-0B7-07", 1, "", "1", true, 0, "searchMetaType为空" ]
+    - [ "A60", "JU2A-0B7-07", 1, "546545", "1", false, 0, "searchMetaType为不存在的数据" ]          # 不能通过 不存在的值
+    # search_name
+    - [ "A60", "JU2A-0B7-07", 1, 1, None, true, 0, "searchName为空" ]
+    - [ "A60", "JU2A-0B7-07", 1, 1, "", true, 0, "searchName不传" ]
+    - [ "A60", "JU2A-0B7-07", 1, 1, "5465454sdsds", false, 0, "searchName为不存在的数据" ]         # 不能通过 不存在的值
+
+  test_02_element_model_pageModel:
+    # 车型列表 每页显示条数 页码（默认为1） 车系编码 车型编码 车型名称 是否关联
+    #  page_index, page_size, series_code, model_code, platformP_id,
+    #  interface_id, link_type, except_result, except_code, except_testcase_description
+    - [ 1,20, "A60", "JU2A-0B7-07", 1, None, 0, true, 0,"正确参数" ]
+    #  series_code
+    - [ 1, 20, None, "JU2A-0B7-07", 1, None, 0, true, 0, "series_code不传" ]
+    - [ 1, 20, "", "JU2A-0B7-07", 1, None, 0,  true, 0, "series_code为空" ]
+    - [ 1, 20, "fdfdsf", "JU2A-0B7-07", 1, None, 0,  true, 0, "series_code为不存在" ]
+    #model_code
+    - [ 1, 20, "A60", None, 1, None, 0, true, 0, "model_code不传" ]
+    - [ 1, 20, "A60", "", 1, None, 0, true, 0, "model_code为空" ]
+    - [ 1, 20, "A60", "dsfdsf", 1, None, 0, true, 0, "model_code为不存在" ]
+    #platformPid
+    - [ 1, 20, "A60", "JU2A-0B7-07", None, None, 0, true, 0, "platformPid不传" ]
+    - [ 1, 20, "A60", "JU2A-0B7-07", "", None, 0,  true, 0, "platformPid为空" ]
+    # 后台对platformPid做了校验，aaaa不成功，返回400
+    - [ 1, 20, "A60", "JU2A-0B7-07", "aaaa", None, 0,  false, 400, "platformPid为不存在" ]
+    #interfaceId
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, None, 0,  true, 0, "interfaceId不传" ]
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, "", 0, true, 0, "interfaceId为空" ]
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, "dfdsffdf", 0, true, 0, "interfaceId不存在" ]
+    #linkType
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, None, 0, true, 0, "linkType不传" ]
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, "", 0, true, 0, "linkType为空" ]
+    #linkType不为（0,1,2）
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, "", 1111, false, 10006, "linkType为不存在" ]
+    # linkType非int类型
+    - [ 1, 20, "A60", "JU2A-0B7-07", 1, "", aaa, false, 400, "linkType不是int类型" ]
+    #pageSize
+    - [ 1, None, "A60", "JU2A-0B7-07", 1, None,  0, true, 0, "pageSize不传" ]
+    - [ 1, "", "A60", "JU2A-0B7-07", 1, None, 0, true, 0, "pageSize为空" ]
+    - [ 1, 1000, "A60", "JU2A-0B7-07", 1, None, 0, true, 0, "pageSize超出最大范围" ]
+    - [ 1, 0, "A60", "JU2A-0B7-07", 1, None, 0, true, 0, "pageSize超出最小范围" ]
+    #pageIndex
+    - [ None, 1, "A60", "JU2A-0B7-07", 1, None, 0, true, 0, "pageIndex不传" ]
+    - [ "", 1, "A60", "JU2A-0B7-07", 1, "", 0, true, 0, "pageIndex为空" ]
+    - [ 1000, 1, "A60", "JU2A-0B7-07", 1, "", 0, true, 0, "pageIndex超出最大范围" ]
+    - [ 0, 1, "A60", "JU2A-0B7-07", 1, "", 0, true, 0, "pageIndex超出最小范围" ]
+
+  test_03_element_model_getSeriesList:
+    # 车系列表/页码 每页条数 车系编码 车系名称 期望返回码,期望结果,
+    #  page_index, page_size, series_code, series_name,except_result, except_code, except_testcase_description
+    #  page_index
+    - [ "", 20, "", "", true, 0, "pageIndex为空" ]
+    - [ None, 20, "", "", true, 0, "pageIndex不传" ]
+    - [ 1000, 20, "", "", true, 0, "pageIndex超出最大范围" ]
+    - [ 0, 20, "", "", true, 0, "pageIndex超出最小范围" ]
+    #  page_size
+    - [ 1, None, None, "", true, 0, "pageSize不传" ]
+    - [ 1, "", None, None, true, 0, "pageSize为空 " ]
+    - [ 1, 1000, None, None, true, 0, "pageSize超出最大范围" ]
+    - [ 1, 0, None, None, true, 0, "pageSize超出最小范围" ]
+    #  series_code
+    - [ 1, 10, None, "", true, 0, "series_code不传" ]
+    - [ 1, 20, "", "", true, 0, "series_code为空" ]
+    - [ 1, 20, "dfdsfdfdsf", "", false, 0, "series_code为不存在" ]           # 不通过， 不存在的数据
+    # series_name
+    - [ 1, 10, None, None, true, 0, "series_name不传" ]
+    - [ 1, 20, None, "", true, 0, "series_name为空" ]
+    - [ 1, 20, None, "fsdfdf", false, 0, "series_name为不存在" ]               # 不通过， 不存在的数据
+
+  test_04_element_model_getModelList:
+    # 车型列表 每页显示条数 页码（默认为1） 车系编码 车型编码 车型名称
+    #  page_index, page_size, series_code, model_code, model_name, except_result, except_code
+    - [ None, None, "", "", "", true, 0, "正确数据" ]
+    #  page_index
+    - [ None, 1, "", "", "", true, 0, "pageIndex不传" ]
+    - [ "", 1, "", "", "", true, 0, "pageIndex为空" ]
+    - [ 1000, 1, "", "", "", true, 0, "pageIndex超出最大范围" ]
+    - [ 0, 1, "", "", "", true, 0, "pageIndex超出最小范围" ]
+    # page_size
+    - [ 10, None, "", "", "", true, 0, "pageSize不传" ]
+    - [ 10, "", "", "", "", true, 0, "pageSize为空" ]
+    - [ 10, 1000, "", "", "", true, 0, "pageSize超出最大范围" ]
+    - [ 10, 0, "", "", "", true, 0, "pageSize超出最小范围" ]
+    # series_code
+    - [ 10, 1, None, "", "", true, 0, "series_code不传" ]
+    - [ 10, 1, "", "", "", true, 0, "series_code为空" ]
+    - [ 10, 1, "dfdf", "", "", false, 0, "series_code为不存在" ]            #不通过  不存在的数据
+    # model_code
+    - [ 10, None, "", None, "", true, 0, "series_code不传" ]
+    - [ 10, None, "", "", "", true, 0, "series_code为空" ]
+    - [ 10, None, "", "fdfds", "", false, 0, "series_code不存在" ]         #不通过  不存在的数据
+    # model_name
+    - [ 10, None, "", "", None, true, 0, "model_name不传" ]
+    - [ 10, None, "", "", "", true, 0, "model_name为空" ]
+    - [ 10, None, "", "", "dfdfdf", false, 0, "model_name不存在" ]         #不通过  不存在的数据
+
+  test_05_add_OrUpdate_Linked_Element:
+    #  series_code, model_code, platform_id, linkId, linkType, metaTyp, preId
+    #  全部正确的数据
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, 5, 228, true, 0, "全部正确的数据" ]
+    #  series_code
+    - [ None, "G1Z12DA1HZ22", 1, 523, 1, 5, 228, false, 500, "series_code不传" ]
+    - [ "", "G1Z12DA1HZ22", 1, 523, 1, 5, 228, true, 0, "series_code为空" ]
+    - [ "dfsdgdghsfdjjfgkhkhk", "G1Z12DA1HZ22", 1, 523, 1, 5, 228, true, 0, "series_code为不存在" ]
+    - [ "A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A266894", "G1Z12DA1HZ22", 1, 523, 1, 5, 228, false, 500, "series_code字符长度超过64位" ]        # 不通过   参数长度大于164位
+    #  model_code
+    - [ "A29", None, 1, 523, 1, 5, 228, false, 500, "modelCode不传" ]
+    - [ "A29", "", 1, 523, 1, 5, 228, true, 0, "modelCode为空" ]
+    - [ "A29", "G1Z12DA1HZ22G1Z12DA1HZ22", 1, 523, 1, 5, 228, true, 0, "modelCode为不存在" ]
+    - [ "A29", "A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A2666A266", 1, 523, 1, 5, 228, true, 0, "modelCode字符长度超过64位" ]                # 不通过   参数长度大于164位
+    #  platform_id
+    - [ "A29", "G1Z12DA1HZ22", None, 523, 1, 5, 228, false, 10028, "platformId不传" ]
+    - [ "A29", "G1Z12DA1HZ22", "", 523, 1, 5, 228, false, 10028, "platformId为空" ]
+    # platform_id————bug  platform_id为不存在的数据
+    - [ "A29", "G1Z12DA1HZ22", 1111111, 523, 1, 5, 228, false, 500, "platformId不存在" ]                         # 不通过   id不存在
+    #  linkId
+    - [ "A29", "G1Z12DA1HZ22", 1, None, 1, 5, 228, false, 500, "linkId不传" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, "", 1, 5, 228, false, 500, "linkId为空" ]
+    #  linkId————bug  linkId为不存在数据，能修改成功
+    - [ "A29", "G1Z12DA1HZ22", 1, 52333333, 1, 5, 228, false, 500, "linkId不存在" ]                           # 不通过   linkId不存在
+    #  linkType
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, None, 5, 228, false, 500, "linkType不传" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, "", 5, 228, false, 500, "linkType为空" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1111, 5, 228, false, 500, "linkType不存在" ]                            # 不通过   linkType不存在
+    # metaTyp
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, None, 228, false, 500, "metaTyp不传" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, "", 228, false, 10024, "metaTyp为空" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, 5555, 228, false, 10024, "metaTyp不存在" ]                          #  不通过 metaTyp不存在
+    # preId
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, 5, None, false, 400, "preId不传" ]
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, 5, "", false, 500, "preId为空" ]
+    # preId--bug
+    - [ "A29", "G1Z12DA1HZ22", 1, 523, 1, 5, 228888888, false, 10024, "preId不存在" ]                        #  不通过 preId不存在
+
+  test_06_element_model_get_Meta_ServiceInterFaceList:
+    #  车系编码，车型编码， 平台主建， 元模型类型， 名称
+    #  page_size, page_index, series_code, model_code, platform_id, status,
+    #  interface_name, interface_bid, service_interface_type, service_pid, field_property,
+    #  [ 20, 10, "A29", "A29全能力集", "1", "0", "Notifier_tttttt", "1", 7, 123, 15, true, 0, "正确数据" ]
+
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "正确数据" ]
+    #  page_size,
+    - [ 9999, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageSize超出最大范围" ]
+    - [ 0, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageSize超出最小范围" ]
+    - [ None, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageSize不传" ]
+    - [ "", 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageSize为空" ]
+    #  page_index
+    - [ 20, 9999, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageIndex超出最大范围" ]
+    - [ 20, 0, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageIndex超出最小范围" ]
+    - [ 20, None, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageIndex不传" ]
+    - [ 20, "", "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "pageIndex为空" ]
+    #  series_code
+    - [ 20, 10, None, "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "service_code不传" ]    #不通过
+    - [ 20, 10, "", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "service_code为空" ]       #不通过
+    - [ 20, 10, "afdfdsfdf", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "series_code为不存在" ]
+    - [ 20, 10, "afdfdsfdffdfdgdsgfhfdhgjgfkghkhgljljjhj", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "series_code字符长度超过64位" ]
+    # model_code
+    - [ 20, 10, "A26", None, "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "modelCode不传" ]               #不通过
+    - [ 20, 10, "A26", "", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 10006, "modelCode为空" ]                #不通过
+    - [ 20, 10, "A26", "fgfgfffdhdgh", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "modelCode不存在" ]
+    - [ 20, 10, "A26", "afdfdsfdffdfdgdsgfhfdhgjgfkghkhgljljjhj", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "modelCode字符长度超过64位" ]
+    # platform_id
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", None, "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "platformId不传" ]         #不通过
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "", "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "platformId为空" ]           #不通过
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", 55555, "1", "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 0, "platformId不存在" ]             #不通过
+    # status
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", None, "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "status不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "", "Notifier_tttttt", "0x9001", 15, 7, "A60", true, 0, "status为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", 111111111111, "Notifier_tttttt", "0x9001", 15, 7, "A60", false, 10006, "status不存在" ]      #不通过
+    # interfaceName
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", None, "0x9001", 15, 7, "A60", true, 0, "interfaceName不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "", "0x9001", 15, 7, "A60", true, 0, "interfaceName为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_ttttddfdsfdggtt", "0x9001", 15, 7, "A60", true, 0, "interfaceName不存在" ]           #不通过
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_ttttddfdsfdggttNotifier_ttttddfdsfdggttNotifier_ttttddfdsfdggtt", "0x9001", 15, 7, "A60", true, 0, "interfaceName字符长度超过128位" ]
+    # interfaceBid
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", None, 15, 7, "A60", true, 0, "interfaceBid不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "", 15, 7, "A60", true, 0, "interfaceBid为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x900fdfd", 15, 7, "A60", true, 0, "interfaceBid字符长度超过6位" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x90", 15, 7, "A60", false, 0, "interfaceBid不存在" ]                         #不通过
+    # serviceInterfacetype
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", None, 7, "A60", true, 0, "serviceInterfacetype不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", "", 7, "A60", true, 0, "serviceInterfacetype为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 777777, 7, "A60", true, 0, "serviceInterfacetype不存在" ]                     #不通过
+    # service_pid
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, None, "A60", true, 0, "service_pid不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, "", "A60", true, 0, "service_pid为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7777777, "A60", true, 0, "service_pid不存在" ]                    #不通过
+    # field_property
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, None, true, 0, "field_property不传" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "", true, 0, "field_property为空" ]
+    - [ 20, 10, "A26", "G1Z12DA1HZ22", "1", "1", "Notifier_tttttt", "0x9001", 15, 7, "A6000000000", true, 0, "field_property不存在" ]                  #不通过
+
+  test_07_element_model_get_Meta_Type_List:
+    - [ true, 0, "查询成功" ]
+
+  test_08_element_model_copy_Model_Linkd_Dateil:
+    #  车型元模型——一键复制——保存关联元素  series_code, model_code, platform_id, targe_series_code, targe_model_code,
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", true, 0, "正确数据" ]
+    # series_code
+    - [ None, "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", false, 10006, "series_code不传" ]
+    - [ "", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", false, 10006, "series_code为空" ]
+    - [ "A2000000000", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", false, 10003, "series_code为不存在" ]
+    #model_code
+    - [ "A20", None, 1, "A26", "G1FA2DA1CN11", false, 10006, "modelCode不传" ]
+    - [ "A20", "", 1, "A26", "G1FA2DA1CN11", false, 10006, "modelCode为空" ]
+    - [ "A20", "G7CJ2DA4442CN24444", 1, "A26", "G1FA2DA1CN11", false, 10003, "modelCode为不存在" ]
+    - [ "A20", "G7CJ2DA4442CN244G7CJ2DA4442CN24444G7CJ2DA4442CN24444G7CJ2DA4442CN24444G7CJ2DA4442CN2444444", 1, "A26", "G1FA2DA1CN11", false, 10006, "modelCode字符长度超过64位" ]  #不通过
+    # platform_id
+    - [ "A20", "G7CJ2DA2CN24", None, "A26", "G1FA2DA1CN11", false, 10006, "platformId不传" ]
+    - [ "A20", "G7CJ2DA2CN24", "", "A26", "G1FA2DA1CN11", false, 10006, "platformId为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 11111, "A26", "G1FA2DA1CN11", false, 10003, "platformId不存在" ]
+    # targe_series_code
+    - [ "A20", "G7CJ2DA2CN24", 1, None, "G1FA2DA1CN11", false, 10006, "targetSeriesCode不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "", "G1FA2DA1CN11", false, 10006, "targetSeriesCode为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26A26A26", "G1FA2DA1CN11", false, 10003, "targetSeriesCode为不存在" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26A26AA26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A26A2626", "G1FA2DA1CN11", false, 10006, "targetSeriesCode字符长度超过64位" ]   #不通过
+    #  targe_model_code
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", None, false, 10006, "targetModelCode不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "", false, 10006, "targetModelCode为不存在" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11G1FA2DA1CN11", false, 10003, "targetModelCode为不存在" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11G1FA2DA1CG1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11N11", false, 10006, "targetModelCode为不存在" ]   #不通过
+
+  test_09_element_model_get_Model_Linkd_Dateil:
+    #  车型元模型——一键复制——查询目标车型是否有关联数据 series_code, model_code, platform_id, targe_series_code, targe_model_code,creator,create_time
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", true, 0, "正确数据" ]
+    # series_code
+    - [ None, "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "series_code不传" ]
+    - [ "", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "series_code为空" ]
+    - [ "A20000000", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "series_code为不存在" ]                               # 不通过  参数不存在
+    - [ "G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "series_code字符长度超过64位" ]
+    # model_code
+    - [ "A20", None, 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "modelCode不传" ]
+    - [ "A20", "", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "modelCode为空" ]
+    - [ "A20", "G7CJ2DA2CN24444444", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "modelCode为不存在" ]                               #  不通过  参数不存在
+    - [ "A20", "G7CJ2DA2CN24G7CJ2DA2CN24G7CJG7CJ2DA2CNG7CJ2DA2CN24G7CJ2DA2CN24G7CJG7CJ2DA2CN24G4G", 1, "A26", "G1FA2DA1CN11", "", "", false, 10006, "modelCode字符长度超过64位" ]
+    # platform_id
+    - [ "A20", "G7CJ2DA2CN24", None, "A26", "G1FA2DA1CN11", "", "", false, 10006, "platformId不传" ]
+    - [ "A20", "G7CJ2DA2CN24", "", "A26", "G1FA2DA1CN11", "", "", false, 10006, "platformId为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1111, "A26", "G1FA2DA1CN11", "", "", false, 10006, "platformId不存在" ]                         #  不通过  参数不存在
+    # targe_series_code
+    - [ "A20", "G7CJ2DA2CN24", 1, None, "G1FA2DA1CN11", "", "", false, 10006, "targetSeriesCode不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "", "G1FA2DA1CN11", "", "", false, 10006, "targetSeriesCode为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", false, 10003, "targetSeriesCode为不存在" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11", "", "", false, 10006, "targetSeriesCode字符长度超过64位" ]
+    # targe_model_code
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", None, "", "", false, 10006, "targetModelCode不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "", "", "", false, 10006, "targetModelCode为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11G1FA2DA1CN11", "", "", false, 10003, "targetModelCode为不存在" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11G1FA2DA1CN11", "", "", false, 10006, "targetModelCode字符长度超过64位" ]
+    # creator
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", None, "", true, 0, "creator不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", true, 0, "creator为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "fdsgsg", "", true, 0, "creator为不存在" ]                      #  不通过  参数不存在
+    # create_time
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", None, true, 0, "createTime不传" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "", true, 0, "createTime为空" ]
+    - [ "A20", "G7CJ2DA2CN24", 1, "A26", "G1FA2DA1CN11", "", "dfdsggsdg", false, 10006, "createTime为不存在" ]                  #  不通过  参数不存在
